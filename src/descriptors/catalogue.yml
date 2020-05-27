@@ -1,0 +1,6 @@
+getAllGirls:
+  handler: src/handlers/catalogue/getAllGirls.handler
+  events:
+    - http: 
+        path: catalogue/getAllGirls
+        method: get

@@ -1,0 +1,27 @@
+service: dd-api
+
+plugins:
+  - serverless-webpack
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  aws_account: ${file(./src/env.yml):${env:SLS_STAGE}.AWS_ACCOUNT}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  iamRoleStatements: ${file(./roles.yml)}
+  region: us-east-1
+  stage: ${env:SLS_STAGE}
+  environment: ${file(./src/env.yml):${env:SLS_STAGE}}
+
+package:
+  exclude:
+    - tests/**
+
+functions: ${file(./src/serverless-dynamic.js):functions}
+
+resources:
+  Resources: ${file(./src/resources.yml)}
