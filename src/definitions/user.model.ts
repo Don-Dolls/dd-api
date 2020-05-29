@@ -19,8 +19,14 @@ export default class User extends EntityBase {
   public email!: string;
 
   @attribute()
-  public phone!: string;
+  public birthdate!: Date;
 
+  @attribute()
+  public cpf!: string;
+
+  @attribute()
+  public phone!: string;
+  
   @attribute()
   public photoUrls!: string[];
 
@@ -29,7 +35,6 @@ export default class User extends EntityBase {
 
   constructor() {
     super();
-
     this.id = uuidv1();
   }
 }
