@@ -1,7 +1,7 @@
 users:
   Type: AWS::DynamoDB::Table
   Properties:
-    TableName: ${env:SLS_STAGE}.users
+    TableName: ${self:custom.stage}.users
     AttributeDefinitions:
       - AttributeName: id
         AttributeType: S

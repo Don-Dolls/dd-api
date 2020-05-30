@@ -4,3 +4,4 @@ getAllGirls:
     - http: 
         path: catalogue/getAllGirls
         method: get
+

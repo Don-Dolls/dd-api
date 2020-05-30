@@ -2,20 +2,30 @@ service: dd-api
 
 plugins:
   - serverless-webpack
-
+  - serverless-domain-manager
 custom:
+  aws_account: ${file(./src/env.yml):${self:custom.stage}.AWS_ACCOUNT}
+  stage: ${env:SLS_STAGE, opt:stage}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-  aws_account: ${file(./src/env.yml):${env:SLS_STAGE}.AWS_ACCOUNT}
+  customDomain:
+    rest:
+      domainName: ${file(./src/env.yml):${self:custom.stage}.DOMAIN_NAME, ''}
+      stage: ${self:custom.stage}
+      basePath: api
+      certificateName: ${file(./src/env.yml):${self:custom.stage}.SSL_DOMAIN_CERTIFICATE}
+      createRoute53Record: true
+      endpointType: 'regional'
+      securityPolicy: tls_1_2
 
 provider:
   name: aws
   runtime: nodejs12.x
   iamRoleStatements: ${file(./roles.yml)}
   region: us-east-1
-  stage: ${env:SLS_STAGE}
-  environment: ${file(./src/env.yml):${env:SLS_STAGE}}
+  stage: ${self:custom.stage}
+  environment: ${file(./src/env.yml):${self:custom.stage}}
 
 package:
   exclude:
